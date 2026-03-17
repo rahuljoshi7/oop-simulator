@@ -5,7 +5,8 @@ from models.user import User
 from models.quiz_result import QuizResult
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import timedelta
-
+from models.user import User
+from models.quiz_result import QuizResult
 
 import json
 
@@ -18,8 +19,11 @@ app.permanent_session_lifetime = timedelta(days=7)
 
 @app.route("/init-db")
 def init_db():
+
+    from database.db import db
     db.create_all()
-    return "Database Initialized!"
+
+    return "✅ Tables Created!"
 # ================= LOAD QUESTIONS =================
 def load_questions():
 
