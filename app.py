@@ -14,6 +14,12 @@ app.config.from_object(Config)
 
 db.init_app(app)
 app.permanent_session_lifetime = timedelta(days=7)
+
+
+@app.route("/init-db")
+def init_db():
+    db.create_all()
+    return "Database Initialized!"
 # ================= LOAD QUESTIONS =================
 def load_questions():
 
