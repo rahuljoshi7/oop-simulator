@@ -1,0 +1,162 @@
+[
+{
+  "id": 21,
+  "level": "intermediate",
+  "question": "What is the output?\nint a = 10, b = 20;\nSystem.out.println(a + b + \"Java\");",
+  "options": ["30Java", "Java30", "1020Java", "Error"],
+  "correct": "30Java",
+  "explanation": "Addition happens before string concatenation."
+},
+{
+  "id": 22,
+  "level": "intermediate",
+  "question": "What is the output?\nSystem.out.println(\"Java\" + 10 + 20);",
+  "options": ["Java1020", "Java30", "1020Java", "Error"],
+  "correct": "Java1020",
+  "explanation": "String concatenation happens left to right."
+},
+{
+  "id": 23,
+  "level": "intermediate",
+  "question": "Which of the following supports runtime polymorphism?",
+  "options": ["Method Overloading", "Method Overriding", "Constructor", "Encapsulation"],
+  "correct": "Method Overriding",
+  "explanation": "Overriding is resolved at runtime."
+},
+{
+  "id": 24,
+  "level": "intermediate",
+  "question": "What is the output?\nclass A{ void show(){System.out.println(\"A\");}}\nclass B extends A{}\nA obj = new B(); obj.show();",
+  "options": ["A", "B", "Error", "Null"],
+  "correct": "A",
+  "explanation": "No overriding in class B."
+},
+{
+  "id": 25,
+  "level": "intermediate",
+  "question": "Which keyword is used to prevent method overriding?",
+  "options": ["static", "final", "private", "protected"],
+  "correct": "final",
+  "explanation": "Final method cannot be overridden."
+},
+{
+  "id": 26,
+  "level": "intermediate",
+  "question": "What is the output?\nint x = 5;\nSystem.out.println(x++);",
+  "options": ["5", "6", "Error", "4"],
+  "correct": "5",
+  "explanation": "Post-increment prints value first."
+},
+{
+  "id": 27,
+  "level": "intermediate",
+  "question": "What is the output?\nint x = 5;\nSystem.out.println(++x);",
+  "options": ["6", "5", "Error", "4"],
+  "correct": "6",
+  "explanation": "Pre-increment increments first."
+},
+{
+  "id": 28,
+  "level": "intermediate",
+  "question": "Which of the following is not allowed in Java?",
+  "options": ["Multiple inheritance (class)", "Single inheritance", "Multilevel inheritance", "Hierarchical inheritance"],
+  "correct": "Multiple inheritance (class)",
+  "explanation": "Java supports it via interfaces only."
+},
+{
+  "id": 29,
+  "level": "intermediate",
+  "question": "What is the output?\nString s1 = \"abc\";\nString s2 = \"abc\";\nSystem.out.println(s1 == s2);",
+  "options": ["true", "false", "Error", "Null"],
+  "correct": "true",
+  "explanation": "String literals share memory."
+},
+{
+  "id": 30,
+  "level": "intermediate",
+  "question": "What is the output?\nString s1 = new String(\"abc\");\nString s2 = new String(\"abc\");\nSystem.out.println(s1 == s2);",
+  "options": ["false", "true", "Error", "Null"],
+  "correct": "false",
+  "explanation": "Different objects in heap."
+},
+{
+  "id": 31,
+  "level": "intermediate",
+  "question": "Which access modifier allows access within package and subclasses?",
+  "options": ["private", "protected", "public", "default"],
+  "correct": "protected",
+  "explanation": "Protected allows subclass access."
+},
+{
+  "id": 32,
+  "level": "intermediate",
+  "question": "What is the output?\nint a = 5, b = 10;\nSystem.out.println(a > b ? a : b);",
+  "options": ["10", "5", "Error", "0"],
+  "correct": "10",
+  "explanation": "Ternary operator returns max."
+},
+{
+  "id": 33,
+  "level": "intermediate",
+  "question": "Which method compares object content?",
+  "options": ["==", "equals()", "compare()", "hashCode()"],
+  "correct": "equals()",
+  "explanation": "equals() compares content."
+},
+{
+  "id": 34,
+  "level": "intermediate",
+  "question": "What is the output?\nSystem.out.println(10 + \"10\");",
+  "options": ["1010", "20", "Error", "10"],
+  "correct": "1010",
+  "explanation": "String concatenation."
+},
+{
+  "id": 35,
+  "level": "intermediate",
+  "question": "Which keyword is used to call parent constructor?",
+  "options": ["this()", "super()", "new", "extends"],
+  "correct": "super()",
+  "explanation": "super() calls parent constructor."
+},
+{
+  "id": 36,
+  "level": "intermediate",
+  "question": "What is the output?\nint x = 2;\nSystem.out.println(x * 3 + \"Java\");",
+  "options": ["6Java", "Java6", "23Java", "Error"],
+  "correct": "6Java",
+  "explanation": "Multiplication first."
+},
+{
+  "id": 37,
+  "level": "intermediate",
+  "question": "Which of the following is immutable?",
+  "options": ["String", "Array", "Object", "List"],
+  "correct": "String",
+  "explanation": "String cannot be modified."
+},
+{
+  "id": 38,
+  "level": "intermediate",
+  "question": "What is the output?\nSystem.out.println(\"A\" + 10 + 20);",
+  "options": ["A1020", "A30", "Error", "1020A"],
+  "correct": "A1020",
+  "explanation": "String concatenation."
+},
+{
+  "id": 39,
+  "level": "intermediate",
+  "question": "Which concept allows one interface to be implemented by multiple classes?",
+  "options": ["Encapsulation", "Inheritance", "Polymorphism", "Abstraction"],
+  "correct": "Polymorphism",
+  "explanation": "Same interface, different implementations."
+},
+{
+  "id": 40,
+  "level": "intermediate",
+  "question": "What is the output?\nint x = 3;\nwhile(x < 5){ x++; }\nSystem.out.println(x);",
+  "options": ["5", "4", "Error", "6"],
+  "correct": "5",
+  "explanation": "Loop stops at x = 5."
+}
+]

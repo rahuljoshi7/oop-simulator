@@ -1,0 +1,485 @@
+[
+{
+  "id": 41,
+  "level": "advanced",
+  "question": "What is the output?\nclass A{ void show(){System.out.println(\"A\");}}\nclass B extends A{ void show(){System.out.println(\"B\");}}\nA obj = new B(); obj.show();",
+  "options": ["A", "B", "Error", "Null"],
+  "correct": "B",
+  "explanation": "Runtime polymorphism → child method is called."
+},
+{
+  "id": 42,
+  "level": "advanced",
+  "question": "What is the output?\nclass A{ int x=10;} class B extends A{ int x=20;}\nA obj=new B(); System.out.println(obj.x);",
+  "options": ["10", "20", "Error", "0"],
+  "correct": "10",
+  "explanation": "Variable access depends on reference type."
+},
+{
+  "id": 43,
+  "level": "advanced",
+  "question": "What is the output?\nclass A{ static void show(){System.out.println(\"A\");}}\nclass B extends A{ static void show(){System.out.println(\"B\");}}\nA obj=new B(); obj.show();",
+  "options": ["A", "B", "Error", "Runtime Error"],
+  "correct": "A",
+  "explanation": "Static methods are not overridden, only hidden."
+},
+{
+  "id": 44,
+  "level": "advanced",
+  "question": "What is the output?\nint x=5; System.out.println(x++ + ++x);",
+  "options": ["11", "12", "13", "10"],
+  "correct": "12",
+  "explanation": "x++ gives 5, ++x gives 7 → total 12."
+},
+{
+  "id": 45,
+  "level": "advanced",
+  "question": "What is the output?\nString s=\"Java\"; s.concat(\"Code\"); System.out.println(s);",
+  "options": ["Java", "JavaCode", "Error", "null"],
+  "correct": "Java",
+  "explanation": "String is immutable."
+},
+{
+  "id": 46,
+  "level": "advanced",
+  "question": "What is the output?\nclass Test{ static{System.out.println(\"Static\");}}\npublic class Main{ public static void main(String[] args){ new Test(); new Test();}}",
+  "options": ["Static", "Static Static", "Error", "Nothing"],
+  "correct": "Static",
+  "explanation": "Static block executes once."
+},
+{
+  "id": 47,
+  "level": "advanced",
+  "question": "What is the output?\nSystem.out.println(10 + \"10\" + 10);",
+  "options": ["101010", "2010", "102010", "Error"],
+  "correct": "101010",
+  "explanation": "String concatenation after first string."
+},
+{
+  "id": 48,
+  "level": "advanced",
+  "question": "What is the output?\nclass A{ A(){System.out.print(\"A\");}}\nclass B extends A{ B(){System.out.print(\"B\");}}\nnew B();",
+  "options": ["AB", "BA", "A", "B"],
+  "correct": "AB",
+  "explanation": "Parent constructor executes first."
+},
+{
+  "id": 49,
+  "level": "advanced",
+  "question": "What is the output?\nSystem.out.println(\"Java\" + 10 * 2);",
+  "options": ["Java20", "Java102", "Error", "20Java"],
+  "correct": "Java20",
+  "explanation": "Multiplication first."
+},
+{
+  "id": 50,
+  "level": "advanced",
+  "question": "What is the output?\nSystem.out.println(10 + 2 + \"Java\");",
+  "options": ["12Java", "Java12", "Error", "102Java"],
+  "correct": "12Java",
+  "explanation": "Addition first."
+},
+{
+  "id": 51,
+  "level": "advanced",
+  "question": "What is the output?\nint x=1; while(x<5){x++;} System.out.println(x);",
+  "options": ["5", "4", "Error", "6"],
+  "correct": "5",
+  "explanation": "Loop ends at x=5."
+},
+{
+  "id": 52,
+  "level": "advanced",
+  "question": "What is the output?\nSystem.out.println(\"A\" + \"B\" + 10 + 20);",
+  "options": ["AB1020", "AB30", "Error", "1020AB"],
+  "correct": "AB1020",
+  "explanation": "String concatenation."
+},
+{
+  "id": 53,
+  "level": "advanced",
+  "question": "What is the output?\nint x=5; System.out.println(++x + x++);",
+  "options": ["11", "12", "13", "10"],
+  "correct": "12",
+  "explanation": "++x=6, x++=6 → 12."
+},
+{
+  "id": 54,
+  "level": "advanced",
+  "question": "Which concept allows method to behave differently at runtime?",
+  "options": ["Overloading", "Overriding", "Encapsulation", "Abstraction"],
+  "correct": "Overriding",
+  "explanation": "Runtime polymorphism."
+},
+{
+  "id": 55,
+  "level": "advanced",
+  "question": "Which keyword prevents inheritance?",
+  "options": ["static", "final", "private", "abstract"],
+  "correct": "final",
+  "explanation": "Final class cannot be extended."
+},
+{
+  "id": 56,
+  "level": "advanced",
+  "question": "What is the output?\nSystem.out.println(5 * 2 + \"X\" + 3);",
+  "options": ["10X3", "10X33", "Error", "X103"],
+  "correct": "10X3",
+  "explanation": "Multiplication first."
+},
+{
+  "id": 57,
+  "level": "advanced",
+  "question": "Which concept provides flexibility and dynamic behavior?",
+  "options": ["Encapsulation", "Polymorphism", "Inheritance", "Abstraction"],
+  "correct": "Polymorphism",
+  "explanation": "Dynamic binding."
+},
+{
+  "id": 58,
+  "level": "advanced",
+  "question": "What is the output?\nString s1=\"abc\"; String s2=\"abc\"; System.out.println(s1.equals(s2));",
+  "options": ["true", "false", "Error", "Null"],
+  "correct": "true",
+  "explanation": "equals() compares content."
+},
+{
+  "id": 59,
+  "level": "advanced",
+  "question": "Which concept ensures implementation hiding?",
+  "options": ["Encapsulation", "Abstraction", "Inheritance", "Polymorphism"],
+  "correct": "Abstraction",
+  "explanation": "Hides internal logic."
+},
+{
+  "id": 60,
+  "level": "advanced",
+  "question": "What is the output?\nint a=3, b=2; System.out.println(a > b ? \"Yes\" : \"No\");",
+  "options": ["Yes", "No", "Error", "Null"],
+  "correct": "Yes",
+  "explanation": "Ternary operator."
+},
+
+{
+  "id": 61,
+  "level": "advanced",
+  "question": "What is the output?\nclass A{ void show(){System.out.println(\"A\");}}\nclass B extends A{ }\nclass C extends B{ void show(){System.out.println(\"C\");}}\nA obj=new C(); obj.show();",
+  "options": ["A", "B", "C", "Error"],
+  "correct": "C",
+  "explanation": "Method overriding → runtime polymorphism."
+},
+{
+  "id": 62,
+  "level": "advanced",
+  "question": "What is the output?\nclass A{ int x=5;} class B extends A{ }\nB obj=new B(); System.out.println(obj.x);",
+  "options": ["5", "0", "Error", "Null"],
+  "correct": "5",
+  "explanation": "Child inherits parent variables."
+},
+{
+  "id": 63,
+  "level": "advanced",
+  "question": "What is the output?\nclass A{ static int x=5;} class B extends A{ }\nSystem.out.println(B.x);",
+  "options": ["5", "0", "Error", "Null"],
+  "correct": "5",
+  "explanation": "Static variables are inherited."
+},
+{
+  "id": 64,
+  "level": "advanced",
+  "question": "What is the output?\nSystem.out.println(10 + 20 + \"30\");",
+  "options": ["3030", "102030", "30", "Error"],
+  "correct": "3030",
+  "explanation": "10+20=30 → \"30\"+\"30\"."
+},
+{
+  "id": 65,
+  "level": "advanced",
+  "question": "What is the output?\nSystem.out.println(\"30\" + 10 + 20);",
+  "options": ["301020", "3030", "Error", "60"],
+  "correct": "301020",
+  "explanation": "String concatenation left to right."
+},
+{
+  "id": 66,
+  "level": "advanced",
+  "question": "What is the output?\nint x=10; System.out.println(x-- - --x);",
+  "options": ["0", "1", "-1", "2"],
+  "correct": "1",
+  "explanation": "10 - 9 = 1."
+},
+{
+  "id": 67,
+  "level": "advanced",
+  "question": "What is the output?\nclass A{ void show(){System.out.println(\"A\");}}\nclass B extends A{ void display(){System.out.println(\"B\");}}\nA obj=new B(); obj.show();",
+  "options": ["A", "B", "Error", "Null"],
+  "correct": "A",
+  "explanation": "Method not overridden."
+},
+{
+  "id": 68,
+  "level": "advanced",
+  "question": "Which concept allows one method name to perform different tasks based on parameters?",
+  "options": ["Overloading", "Overriding", "Encapsulation", "Abstraction"],
+  "correct": "Overloading",
+  "explanation": "Compile-time polymorphism."
+},
+{
+  "id": 69,
+  "level": "advanced",
+  "question": "What is the output?\nString s=\"abc\"; s = s + \"def\"; System.out.println(s);",
+  "options": ["abcdef", "abc", "Error", "null"],
+  "correct": "abcdef",
+  "explanation": "New string is created."
+},
+{
+  "id": 70,
+  "level": "advanced",
+  "question": "What is the output?\nSystem.out.println(\"X\" + (10 + 20));",
+  "options": ["X30", "X1020", "Error", "30X"],
+  "correct": "X30",
+  "explanation": "Parentheses evaluated first."
+},
+{
+  "id": 71,
+  "level": "advanced",
+  "question": "What is the output?\nclass A{ A(){System.out.print(\"A\");}}\nclass B extends A{ B(){System.out.print(\"B\");}}\nclass C extends B{ C(){System.out.print(\"C\");}}\nnew C();",
+  "options": ["ABC", "CBA", "BAC", "Error"],
+  "correct": "ABC",
+  "explanation": "Constructor chain from parent to child."
+},
+{
+  "id": 72,
+  "level": "advanced",
+  "question": "What is the output?\nSystem.out.println(5 + 5 + \"5\");",
+  "options": ["105", "55", "Error", "15"],
+  "correct": "105",
+  "explanation": "10 + \"5\"."
+},
+{
+  "id": 73,
+  "level": "advanced",
+  "question": "What is the output?\nSystem.out.println(\"5\" + 5 + 5);",
+  "options": ["555", "55", "Error", "15"],
+  "correct": "555",
+  "explanation": "String concatenation."
+},
+{
+  "id": 74,
+  "level": "advanced",
+  "question": "Which concept helps in achieving runtime flexibility?",
+  "options": ["Encapsulation", "Inheritance", "Polymorphism", "Abstraction"],
+  "correct": "Polymorphism",
+  "explanation": "Dynamic method binding."
+},
+{
+  "id": 75,
+  "level": "advanced",
+  "question": "What is the output?\nint x=2; int y=3; System.out.println(x*y + \"Z\");",
+  "options": ["6Z", "23Z", "Error", "Z6"],
+  "correct": "6Z",
+  "explanation": "Multiplication first."
+},
+{
+  "id": 76,
+  "level": "advanced",
+  "question": "What is the output?\nSystem.out.println(\"Z\" + 2 * 3);",
+  "options": ["Z6", "Z23", "Error", "6Z"],
+  "correct": "Z6",
+  "explanation": "Multiplication first."
+},
+{
+  "id": 77,
+  "level": "advanced",
+  "question": "Which keyword is used to define interface?",
+  "options": ["class", "interface", "abstract", "implements"],
+  "correct": "interface",
+  "explanation": "Interface keyword."
+},
+{
+  "id": 78,
+  "level": "advanced",
+  "question": "What is the output?\nSystem.out.println((10 + 20) + \"Java\");",
+  "options": ["30Java", "Java30", "1020Java", "Error"],
+  "correct": "30Java",
+  "explanation": "Addition first."
+},
+{
+  "id": 79,
+  "level": "advanced",
+  "question": "What is the output?\nint x=3; System.out.println(x++ + x++);",
+  "options": ["6", "7", "8", "9"],
+  "correct": "7",
+  "explanation": "3 + 4 = 7."
+},
+{
+  "id": 80,
+  "level": "advanced",
+  "question": "Which concept helps in code reusability and hierarchy?",
+  "options": ["Encapsulation", "Inheritance", "Polymorphism", "Abstraction"],
+  "correct": "Inheritance",
+  "explanation": "Parent-child relationship."
+},
+
+{
+  "id": 81,
+  "level": "advanced",
+  "question": "What is the output?\nclass A{ A(){System.out.print(\"A\");}}\nclass B extends A{ B(){System.out.print(\"B\");}}\nclass C extends B{ C(){System.out.print(\"C\");}}\npublic class Main{ public static void main(String[] args){ new C();}}",
+  "options": ["ABC", "CBA", "BAC", "Error"],
+  "correct": "ABC",
+  "explanation": "Constructor calls parent first → A → B → C."
+},
+{
+  "id": 82,
+  "level": "advanced",
+  "question": "What is the output?\nclass A{ void show(){System.out.println(\"A\");}}\nclass B extends A{ static void show(){System.out.println(\"B\");}}\nA obj=new B(); obj.show();",
+  "options": ["A", "B", "Error", "Runtime Error"],
+  "correct": "Error",
+  "explanation": "Static method cannot override instance method."
+},
+{
+  "id": 83,
+  "level": "advanced",
+  "question": "What is the output?\nclass A{ static void show(){System.out.println(\"A\");}}\nclass B extends A{ void show(){System.out.println(\"B\");}}\nA obj=new B(); obj.show();",
+  "options": ["A", "B", "Error", "Runtime Error"],
+  "correct": "Error",
+  "explanation": "Cannot override static with instance method."
+},
+{
+  "id": 84,
+  "level": "advanced",
+  "question": "What is the output?\ninterface A{ void show(); }\nclass B implements A{ public void show(){System.out.println(\"B\");}}\nA obj=new B(); obj.show();",
+  "options": ["A", "B", "Error", "Null"],
+  "correct": "B",
+  "explanation": "Interface reference calling implementation."
+},
+{
+  "id": 85,
+  "level": "advanced",
+  "question": "What is the output?\nabstract class A{ abstract void show(); }\nclass B extends A{ void show(){System.out.println(\"B\");}}\nA obj=new B(); obj.show();",
+  "options": ["A", "B", "Error", "Null"],
+  "correct": "B",
+  "explanation": "Abstract class implemented by child."
+},
+{
+  "id": 86,
+  "level": "advanced",
+  "question": "What is the output?\nSystem.out.println(10 + 20 + \"Java\" + 30);",
+  "options": ["30Java30", "Java60", "1020Java30", "Error"],
+  "correct": "30Java30",
+  "explanation": "30 + \"Java\" → \"30Java\" + 30."
+},
+{
+  "id": 87,
+  "level": "advanced",
+  "question": "What is the output?\nSystem.out.println(\"Java\" + 10 + 20 + 30);",
+  "options": ["Java102030", "Java60", "Error", "102030Java"],
+  "correct": "Java102030",
+  "explanation": "String concatenation throughout."
+},
+{
+  "id": 88,
+  "level": "advanced",
+  "question": "What is the output?\nint x=5; System.out.println(x++ + x++ + ++x);",
+  "options": ["17", "18", "19", "16"],
+  "correct": "18",
+  "explanation": "5 + 6 + 7 = 18."
+},
+{
+  "id": 89,
+  "level": "advanced",
+  "question": "Which concept allows multiple interfaces to be implemented?",
+  "options": ["Encapsulation", "Inheritance", "Multiple inheritance via interface", "Polymorphism"],
+  "correct": "Multiple inheritance via interface",
+  "explanation": "Java supports multiple inheritance via interfaces."
+},
+{
+  "id": 90,
+  "level": "advanced",
+  "question": "What is the output?\nString s=\"abc\"; String t=s; s=\"xyz\"; System.out.println(t);",
+  "options": ["abc", "xyz", "Error", "null"],
+  "correct": "abc",
+  "explanation": "Strings are immutable."
+},
+{
+  "id": 91,
+  "level": "advanced",
+  "question": "What is the output?\nSystem.out.println((\"Java\" + 10) + 20);",
+  "options": ["Java1020", "Java30", "Error", "1020Java"],
+  "correct": "Java1020",
+  "explanation": "String concatenation."
+},
+{
+  "id": 92,
+  "level": "advanced",
+  "question": "Which keyword is used to implement interface?",
+  "options": ["extends", "implements", "super", "this"],
+  "correct": "implements",
+  "explanation": "Used to implement interface."
+},
+{
+  "id": 93,
+  "level": "advanced",
+  "question": "What is the output?\nclass Test{ static int x=0; Test(){x++;}}\npublic class Main{ public static void main(String[] args){ new Test(); new Test(); System.out.println(Test.x);}}",
+  "options": ["1", "2", "0", "Error"],
+  "correct": "2",
+  "explanation": "Static variable shared."
+},
+{
+  "id": 94,
+  "level": "advanced",
+  "question": "What is the output?\nclass A{ void show(){System.out.println(\"A\");}}\nclass B extends A{ void show(){System.out.println(\"B\");}}\nA obj=new B(); ((A)obj).show();",
+  "options": ["A", "B", "Error", "Null"],
+  "correct": "B",
+  "explanation": "Runtime polymorphism."
+},
+{
+  "id": 95,
+  "level": "advanced",
+  "question": "Which concept allows calling parent method explicitly?",
+  "options": ["this", "super", "new", "extends"],
+  "correct": "super",
+  "explanation": "super keyword."
+},
+{
+  "id": 96,
+  "level": "advanced",
+  "question": "What is the output?\nSystem.out.println(5 + 5 * 2 + \"X\");",
+  "options": ["15X", "20X", "10X", "Error"],
+  "correct": "15X",
+  "explanation": "5 + 10 = 15."
+},
+{
+  "id": 97,
+  "level": "advanced",
+  "question": "What is the output?\nSystem.out.println(\"X\" + 5 + 5 * 2);",
+  "options": ["X510", "X55", "Error", "X20"],
+  "correct": "X510",
+  "explanation": "String concatenation."
+},
+{
+  "id": 98,
+  "level": "advanced",
+  "question": "Which concept allows extending abstract class?",
+  "options": ["implements", "extends", "super", "this"],
+  "correct": "extends",
+  "explanation": "Abstract classes are extended."
+},
+{
+  "id": 99,
+  "level": "advanced",
+  "question": "What is the output?\nint x=4; System.out.println(x++ + ++x + x);",
+  "options": ["14", "15", "16", "17"],
+  "correct": "15",
+  "explanation": "4 + 6 + 5 = 15."
+},
+{
+  "id": 100,
+  "level": "advanced",
+  "question": "Which concept supports dynamic method dispatch?",
+  "options": ["Encapsulation", "Inheritance", "Polymorphism", "Abstraction"],
+  "correct": "Polymorphism",
+  "explanation": "Runtime method selection."
+}
+
+]

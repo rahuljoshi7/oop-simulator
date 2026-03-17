@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Performance</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --accent: #c8f04c;
+      --bg: #0e0e10;
+      --surface: #18181c;
+      --surface2: #222228;
+      --border: #2e2e38;
+      --text: #f0f0f4;
+      --muted: #7a7a8c;
+      --correct: #4cde80;
+      --beginner: #c8f04c;
+      --intermediate: #f0a830;
+      --advanced: #ff5c5c;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg); font-family: 'DM Sans', sans-serif;
+      color: var(--text); min-height: 100vh; overflow-x: hidden; position: relative;
+    }
+    body::before, body::after {
+      content: ''; position: fixed; border-radius: 50%;
+      filter: blur(110px); opacity: 0.07; pointer-events: none;
+    }
+    body::before { width: 500px; height: 500px; background: var(--accent); top: -160px; right: -160px; }
+    body::after  { width: 420px; height: 420px; background: #5c7fff; bottom: -120px; left: -120px; }
+
+    .top-nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.2rem 2.5rem; border-bottom: 1px solid var(--border);
+      background: rgba(14,14,16,0.85); backdrop-filter: blur(12px);
+      position: sticky; top: 0; z-index: 100;
+    }
+    .brand-mark { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .brand-icon { width: 34px; height: 34px; background: var(--accent); border-radius: 9px; display: flex; align-items: center; justify-content: center; }
+    .brand-icon svg { width: 16px; height: 16px; }
+    .brand-name { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.1rem; color: var(--text); }
+    .nav-back {
+      display: flex; align-items: center; gap: 6px; color: var(--muted);
+      font-size: 0.85rem; font-weight: 500; text-decoration: none;
+      padding: 6px 14px; border: 1px solid var(--border); border-radius: 8px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .nav-back:hover { color: var(--text); border-color: var(--muted); }
+
+    .main { max-width: 860px; margin: 0 auto; padding: 3rem 1.5rem 5rem; }
+
+    .page-header { margin-bottom: 2.5rem; animation: fadeUp 0.5s ease both; }
+    .page-tag { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.4rem; }
+    .page-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 2.2rem; letter-spacing: -0.04em; }
+    .page-sub { color: var(--muted); font-size: 0.92rem; margin-top: 0.3rem; }
+
+    .summary-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;
+      margin-bottom: 2rem; animation: fadeUp 0.5s 0.1s ease both;
+    }
+    @media (max-width: 600px) { .summary-grid { grid-template-columns: 1fr; } }
+    .summary-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 1.4rem 1.2rem; }
+    .s-label { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.4rem; }
+    .s-value { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 2rem; letter-spacing: -0.04em; line-height: 1; }
+    .s-value.accent { color: var(--accent); }
+    .s-value.green  { color: var(--correct); }
+    .s-value.blue   { color: #7eb4ff; }
+    .s-sub { font-size: 0.78rem; color: var(--muted); margin-top: 0.3rem; }
+
+    .section-label { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.9rem; }
+
+    .level-list { display: flex; flex-direction: column; gap: 0.75rem; animation: fadeUp 0.5s 0.2s ease both; }
+    .level-row {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
+      padding: 1.3rem 1.5rem; display: grid;
+      grid-template-columns: 190px 1fr auto; align-items: center; gap: 1.5rem;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    @media (max-width: 600px) { .level-row { grid-template-columns: 1fr; gap: 1rem; } }
+    .level-row:hover { border-color: #3e3e50; transform: translateY(-1px); }
+    .level-info { display: flex; align-items: center; gap: 12px; }
+    .level-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    .level-name { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.95rem; }
+    .level-score-frac { font-size: 0.8rem; color: var(--muted); margin-top: 1px; }
+    .bar-wrap { flex: 1; }
+    .bar-track { background: var(--surface2); border-radius: 99px; height: 6px; overflow: hidden; }
+    .bar-fill { height: 100%; border-radius: 99px; transition: width 1s cubic-bezier(0.4,0,0.2,1); width: 0%; }
+    .bar-pct { font-size: 0.75rem; color: var(--muted); margin-top: 0.35rem; text-align: right; }
+    .level-pct-badge { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.3rem; min-width: 60px; text-align: right; }
+
+    .lvl-beginner .level-dot, .lvl-beginner .bar-fill { background: var(--beginner); }
+    .lvl-beginner .level-pct-badge { color: var(--beginner); }
+    .lvl-intermediate .level-dot, .lvl-intermediate .bar-fill { background: var(--intermediate); }
+    .lvl-intermediate .level-pct-badge { color: var(--intermediate); }
+    .lvl-advanced .level-dot, .lvl-advanced .bar-fill { background: var(--advanced); }
+    .lvl-advanced .level-pct-badge { color: var(--advanced); }
+
+    .empty-state {
+      background: var(--surface); border: 1px dashed var(--border); border-radius: 16px;
+      padding: 3rem; text-align: center; color: var(--muted); font-size: 0.95rem;
+    }
+    .empty-state .e-icon { font-size: 2.5rem; margin-bottom: 0.8rem; }
+
+    .cta-row { margin-top: 2rem; animation: fadeUp 0.5s 0.3s ease both; opacity: 0; }
+    .btn-dash {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--surface); color: var(--text); border: 1px solid var(--border);
+      border-radius: 12px; padding: 0.8rem 1.4rem;
+      font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.9rem;
+      text-decoration: none; transition: border-color 0.2s, transform 0.15s;
+    }
+    .btn-dash:hover { border-color: var(--muted); color: var(--text); transform: translateY(-1px); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="top-nav">
+  <a class="brand-mark" href="/dashboard">
+    <div class="brand-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#0e0e10" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+      </svg>
+    </div>
+    <span class="brand-name">Sparks</span>
+  </a>
+  <a href="/dashboard" class="nav-back">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    Dashboard
+  </a>
+</nav>
+
+<main class="main">
+
+  <div class="page-header">
+    <div class="page-tag">📊 Analytics</div>
+    <h1 class="page-title">Your Performance</h1>
+    <p class="page-sub">Track how you're doing across every level.</p>
+  </div>
+
+  {% if results %}
+  {% set total_score = results | sum(attribute='score') %}
+  {% set total_questions = results | sum(attribute='total') %}
+  {% set avg_pct = (results | sum(attribute='percentage') / results | length) | round | int %}
+  <div class="summary-grid">
+    <div class="summary-card">
+      <div class="s-label">Avg. Score</div>
+      <div class="s-value accent">{{ avg_pct }}%</div>
+      <div class="s-sub">across all levels</div>
+    </div>
+    <div class="summary-card">
+      <div class="s-label">Questions Correct</div>
+      <div class="s-value green">{{ total_score }}</div>
+      <div class="s-sub">out of {{ total_questions }}</div>
+    </div>
+    <div class="summary-card">
+      <div class="s-label">Levels Attempted</div>
+      <div class="s-value blue">{{ results | length }}</div>
+      <div class="s-sub">of 3 total</div>
+    </div>
+  </div>
+  {% endif %}
+
+  <div class="section-label">Level Breakdown</div>
+  <div class="level-list" id="levelList">
+    {% if results %}
+      {% for r in results %}
+      <div class="level-row lvl-{{ r.level | lower }}" data-pct="{{ r.percentage }}">
+        <div class="level-info">
+          <div class="level-dot"></div>
+          <div>
+            <div class="level-name">{{ r.level | capitalize }}</div>
+            <div class="level-score-frac">{{ r.score }} / {{ r.total }} correct</div>
+          </div>
+        </div>
+        <div class="bar-wrap">
+          <div class="bar-track"><div class="bar-fill"></div></div>
+          <div class="bar-pct">{{ r.percentage }}%</div>
+        </div>
+        <div class="level-pct-badge">{{ r.percentage }}%</div>
+      </div>
+      {% endfor %}
+    {% else %}
+      <div class="empty-state">
+        <div class="e-icon">📭</div>
+        <div>No quiz results yet. Complete a quiz to see your performance here.</div>
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="cta-row">
+    <a href="/dashboard" class="btn-dash">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      Back to Dashboard
+    </a>
+  </div>
+
+</main>
+
+<script>
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      document.querySelectorAll('.level-row').forEach((row, i) => {
+        const pct = row.dataset.pct || 0;
+        const fill = row.querySelector('.bar-fill');
+        if (fill) setTimeout(() => { fill.style.width = pct + '%'; }, i * 150);
+      });
+    }, 300);
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

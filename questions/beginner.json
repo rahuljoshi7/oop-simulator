@@ -1,0 +1,162 @@
+[
+{
+  "id": 1,
+  "level": "beginner",
+  "question": "What is Object-Oriented Programming (OOP)?",
+  "options": ["Programming using objects", "Programming using functions", "Programming using loops", "Programming using variables"],
+  "correct": "Programming using objects",
+  "explanation": "OOP is based on objects and classes."
+},
+{
+  "id": 2,
+  "level": "beginner",
+  "question": "A class is a:",
+  "options": ["Blueprint of object", "Instance of object", "Variable", "Function"],
+  "correct": "Blueprint of object",
+  "explanation": "Class defines structure and behavior."
+},
+{
+  "id": 3,
+  "level": "beginner",
+  "question": "An object is an instance of:",
+  "options": ["Class", "Method", "Variable", "Loop"],
+  "correct": "Class",
+  "explanation": "Objects are created from classes."
+},
+{
+  "id": 4,
+  "level": "beginner",
+  "question": "Which concept binds data and methods together?",
+  "options": ["Encapsulation", "Inheritance", "Polymorphism", "Abstraction"],
+  "correct": "Encapsulation",
+  "explanation": "Encapsulation groups data and functions."
+},
+{
+  "id": 5,
+  "level": "beginner",
+  "question": "Which concept allows code reuse?",
+  "options": ["Encapsulation", "Inheritance", "Polymorphism", "Abstraction"],
+  "correct": "Inheritance",
+  "explanation": "Inheritance allows reuse of parent class code."
+},
+{
+  "id": 6,
+  "level": "beginner",
+  "question": "Polymorphism means:",
+  "options": ["Many forms", "One form", "No form", "Two forms"],
+  "correct": "Many forms",
+  "explanation": "Same method behaves differently."
+},
+{
+  "id": 7,
+  "level": "beginner",
+  "question": "Which concept hides implementation details?",
+  "options": ["Encapsulation", "Inheritance", "Abstraction", "Polymorphism"],
+  "correct": "Abstraction",
+  "explanation": "Abstraction hides complexity."
+},
+{
+  "id": 8,
+  "level": "beginner",
+  "question": "Which keyword is used to create an object in Java?",
+  "options": ["new", "this", "class", "super"],
+  "correct": "new",
+  "explanation": "Objects are created using new keyword."
+},
+{
+  "id": 9,
+  "level": "beginner",
+  "question": "Constructor is used to:",
+  "options": ["Initialize object", "Destroy object", "Print object", "Copy object"],
+  "correct": "Initialize object",
+  "explanation": "Constructor initializes values."
+},
+{
+  "id": 10,
+  "level": "beginner",
+  "question": "Constructor name must be same as:",
+  "options": ["Class name", "Method name", "Variable", "Object"],
+  "correct": "Class name",
+  "explanation": "Constructor must match class name."
+},
+{
+  "id": 11,
+  "level": "beginner",
+  "question": "Which keyword refers to current object?",
+  "options": ["this", "super", "new", "class"],
+  "correct": "this",
+  "explanation": "this refers to current object."
+},
+{
+  "id": 12,
+  "level": "beginner",
+  "question": "Which keyword refers to parent class?",
+  "options": ["super", "this", "new", "extends"],
+  "correct": "super",
+  "explanation": "super accesses parent class."
+},
+{
+  "id": 13,
+  "level": "beginner",
+  "question": "Which concept allows one class to inherit another?",
+  "options": ["Inheritance", "Encapsulation", "Polymorphism", "Abstraction"],
+  "correct": "Inheritance",
+  "explanation": "Child class inherits parent."
+},
+{
+  "id": 14,
+  "level": "beginner",
+  "question": "Which type of inheritance is not supported in Java?",
+  "options": ["Multiple inheritance (class)", "Single inheritance", "Multilevel inheritance", "Hierarchical inheritance"],
+  "correct": "Multiple inheritance (class)",
+  "explanation": "Java supports it via interfaces only."
+},
+{
+  "id": 15,
+  "level": "beginner",
+  "question": "Which concept ensures data security?",
+  "options": ["Encapsulation", "Inheritance", "Polymorphism", "Abstraction"],
+  "correct": "Encapsulation",
+  "explanation": "Encapsulation hides data."
+},
+{
+  "id": 16,
+  "level": "beginner",
+  "question": "Method overloading means:",
+  "options": ["Same name, different parameters", "Same name, same parameters", "Different name", "No parameters"],
+  "correct": "Same name, different parameters",
+  "explanation": "Compile-time polymorphism."
+},
+{
+  "id": 17,
+  "level": "beginner",
+  "question": "Method overriding happens in:",
+  "options": ["Child class", "Same class", "Parent class", "Interface only"],
+  "correct": "Child class",
+  "explanation": "Child overrides parent method."
+},
+{
+  "id": 18,
+  "level": "beginner",
+  "question": "Which method is called automatically when object is created?",
+  "options": ["Constructor", "Main", "Destructor", "Function"],
+  "correct": "Constructor",
+  "explanation": "Constructor is invoked automatically."
+},
+{
+  "id": 19,
+  "level": "beginner",
+  "question": "Which concept allows multiple methods with same name but different behavior?",
+  "options": ["Polymorphism", "Inheritance", "Encapsulation", "Abstraction"],
+  "correct": "Polymorphism",
+  "explanation": "Same method, different forms."
+},
+{
+  "id": 20,
+  "level": "beginner",
+  "question": "Which keyword is used for inheritance in Java?",
+  "options": ["extends", "implements", "super", "this"],
+  "correct": "extends",
+  "explanation": "Used to inherit class."
+}
+]

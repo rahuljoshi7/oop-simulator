@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --accent: #c8f04c;
+      --accent-dark: #a8cf2c;
+      --bg: #0e0e10;
+      --surface: #18181c;
+      --surface2: #222228;
+      --border: #2e2e38;
+      --text: #f0f0f4;
+      --muted: #7a7a8c;
+      --beginner: #c8f04c;
+      --intermediate: #f0a830;
+      --advanced: #ff5c5c;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      font-family: 'DM Sans', sans-serif;
+      color: var(--text);
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Ambient blobs */
+    body::before, body::after {
+      content: '';
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(110px);
+      opacity: 0.08;
+      pointer-events: none;
+    }
+    body::before {
+      width: 600px; height: 600px;
+      background: var(--accent);
+      top: -200px; right: -200px;
+    }
+    body::after {
+      width: 500px; height: 500px;
+      background: #5c7fff;
+      bottom: -150px; left: -150px;
+    }
+
+    /* ── NAVBAR ── */
+    .top-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.2rem 2.5rem;
+      border-bottom: 1px solid var(--border);
+      background: rgba(14,14,16,0.85);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .brand-mark {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none;
+    }
+    .brand-icon {
+      width: 34px; height: 34px;
+      background: var(--accent);
+      border-radius: 9px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .brand-icon svg { width: 16px; height: 16px; }
+    .brand-name {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.1rem;
+      color: var(--text);
+    }
+
+    .nav-logout {
+      display: flex; align-items: center; gap: 6px;
+      color: var(--muted);
+      font-size: 0.85rem;
+      font-weight: 500;
+      text-decoration: none;
+      padding: 6px 14px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .nav-logout:hover { color: var(--text); border-color: var(--muted); }
+
+    /* ── MAIN ── */
+    .main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem 4rem;
+    }
+
+    /* Welcome header */
+    .welcome-row {
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 1rem;
+      margin-bottom: 2.8rem;
+      animation: fadeUp 0.5s ease forwards;
+    }
+    .welcome-label {
+      font-size: 0.78rem;
+      color: var(--accent);
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 0.3rem;
+    }
+    .welcome-name {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 2.4rem;
+      letter-spacing: -0.04em;
+      line-height: 1.1;
+    }
+    .welcome-sub {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-top: 0.3rem;
+    }
+   
+    
+    /* Section label */
+    .section-label {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.9rem;
+    }
+
+    /* ── PATH CARDS ── */
+    .path-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    @media (max-width: 700px) { .path-grid { grid-template-columns: 1fr; } }
+
+    .path-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      text-decoration: none;
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      gap: 1.1rem;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+      position: relative;
+      overflow: hidden;
+      animation: fadeUp 0.5s ease forwards;
+      opacity: 0;
+    }
+    .path-card:nth-child(1) { animation-delay: 0.1s; }
+    .path-card:nth-child(2) { animation-delay: 0.2s; }
+    .path-card:nth-child(3) { animation-delay: 0.3s; }
+
+    .path-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 3px;
+      border-radius: 0 0 16px 16px;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .path-card.beginner::after  { background: var(--beginner); }
+    .path-card.intermediate::after { background: var(--intermediate); }
+    .path-card.advanced::after  { background: var(--advanced); }
+
+    .path-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.35);
+    }
+    .path-card:hover { border-color: #3e3e50; }
+    .path-card:hover::after { opacity: 1; }
+
+    .path-icon {
+      width: 42px; height: 42px;
+      border-radius: 11px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem;
+    }
+    .beginner  .path-icon { background: rgba(200,240,76,0.12); }
+    .intermediate .path-icon { background: rgba(240,168,48,0.12); }
+    .advanced  .path-icon { background: rgba(255,92,92,0.12); }
+
+    .path-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      letter-spacing: -0.01em;
+      margin-bottom: 0.2rem;
+    }
+    .path-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.5; }
+
+    .path-pill {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      padding: 3px 10px;
+      border-radius: 20px;
+      align-self: flex-start;
+    }
+    .beginner  .path-pill { background: rgba(200,240,76,0.12); color: var(--beginner); }
+    .intermediate .path-pill { background: rgba(240,168,48,0.12); color: var(--intermediate); }
+    .advanced  .path-pill { background: rgba(255,92,92,0.12); color: var(--advanced); }
+
+    .path-arrow {
+      margin-top: auto;
+      color: var(--muted);
+      font-size: 0.85rem;
+      display: flex; align-items: center; gap: 4px;
+      transition: gap 0.2s, color 0.2s;
+    }
+    .path-card:hover .path-arrow { gap: 8px; color: var(--text); }
+
+    /* ── BOTTOM TOOLS ── */
+    .tools-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      animation: fadeUp 0.5s 0.4s ease forwards;
+      opacity: 0;
+    }
+    @media (max-width: 500px) { .tools-grid { grid-template-columns: 1fr; } }
+
+    .tool-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.3rem 1.5rem;
+      text-decoration: none;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    }
+    .tool-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+      border-color: #3e3e50;
+      color: var(--text);
+    }
+    .tool-icon {
+      width: 40px; height: 40px; flex-shrink: 0;
+      border-radius: 10px;
+      background: var(--surface2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+    }
+    .tool-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 0.92rem;
+    }
+    .tool-desc { font-size: 0.78rem; color: var(--muted); margin-top: 1px; }
+
+    /* Animations */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .welcome-row { animation: fadeUp 0.5s ease forwards; }
+    .section-label { animation: fadeUp 0.5s 0.05s ease both; }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="top-nav">
+  <a class="brand-mark" href="#">
+    <div class="brand-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#0e0e10" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+      </svg>
+    </div>
+    <span class="brand-name">Sparks</span>
+  </a>
+  <a href="/logout" class="nav-logout">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+    Logout
+  </a>
+</nav>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- Welcome -->
+  <div class="welcome-row">
+    <div>
+      <div class="welcome-label">Dashboard</div>
+      <div class="welcome-name">Hello, {{ name }} 👋</div>
+      <div class="welcome-sub">Pick a path and keep the momentum going.</div>
+    </div>
+    
+  </div>
+
+  <!-- Learning Paths -->
+  <div class="section-label">Learning Paths</div>
+  <div class="path-grid">
+
+    <a href="/quiz/beginner" class="path-card beginner">
+      <div class="path-icon">🌱</div>
+      <div>
+        <div class="path-title">Beginner</div>
+        <div class="path-desc">Start from the foundations. Perfect for those new to OOP.</div>
+      </div>
+      <span class="path-pill">Start Here</span>
+      <div class="path-arrow">Start Learning <span>→</span></div>
+    </a>
+
+    <a href="/quiz/intermediate" class="path-card intermediate">
+      <div class="path-icon">⚡</div>
+      <div>
+        <div class="path-title">Intermediate</div>
+        <div class="path-desc">Challenge yourself with more complex OOP concepts.</div>
+      </div>
+      <span class="path-pill">Level Up</span>
+      <div class="path-arrow">Take Quiz <span>→</span></div>
+    </a>
+
+    <a href="/quiz/advanced" class="path-card advanced">
+      <div class="path-icon">🔥</div>
+      <div>
+        <div class="path-title">Advanced</div>
+        <div class="path-desc">Tackle expert-level questions and edge cases.</div>
+      </div>
+      <span class="path-pill">Expert</span>
+      <div class="path-arrow">Challenge Me <span>→</span></div>
+    </a>
+
+  </div>
+
+  <!-- Tools -->
+  <div class="section-label" style="margin-top:2rem;">Tools</div>
+  <div class="tools-grid">
+
+    <a href="/performance" class="tool-card">
+      <div class="tool-icon">📊</div>
+      <div>
+        <div class="tool-title">Performance</div>
+        <div class="tool-desc">Track scores, streaks & progress over time</div>
+      </div>
+    </a>
+
+    <a href="/simulator" class="tool-card">
+      <div class="tool-icon">🧪</div>
+      <div>
+        <div class="tool-title">OOP Simulator</div>
+        <div class="tool-desc">Experiment with objects, classes & inheritance</div>
+      </div>
+    </a>
+
+  </div>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

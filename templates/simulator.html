@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>OOP Simulator</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --accent: #c8f04c;
+      --accent-dark: #a8cf2c;
+      --bg: #0e0e10;
+      --surface: #18181c;
+      --surface2: #222228;
+      --border: #2e2e38;
+      --text: #f0f0f4;
+      --muted: #7a7a8c;
+      --info: #7eb4ff;
+      --correct: #4cde80;
+      --warn: #f0a830;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg); font-family: 'DM Sans', sans-serif;
+      color: var(--text); min-height: 100vh; overflow-x: hidden; position: relative;
+    }
+    body::before, body::after {
+      content: ''; position: fixed; border-radius: 50%;
+      filter: blur(110px); opacity: 0.07; pointer-events: none;
+    }
+    body::before { width: 500px; height: 500px; background: #5c7fff; top: -160px; left: -160px; }
+    body::after  { width: 420px; height: 420px; background: var(--accent); bottom: -100px; right: -100px; }
+
+    .top-nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.2rem 2.5rem; border-bottom: 1px solid var(--border);
+      background: rgba(14,14,16,0.85); backdrop-filter: blur(12px);
+      position: sticky; top: 0; z-index: 100;
+    }
+    .brand-mark { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .brand-icon { width: 34px; height: 34px; background: var(--accent); border-radius: 9px; display: flex; align-items: center; justify-content: center; }
+    .brand-icon svg { width: 16px; height: 16px; }
+    .brand-name { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.1rem; color: var(--text); }
+    .nav-back {
+      display: flex; align-items: center; gap: 6px; color: var(--muted);
+      font-size: 0.85rem; font-weight: 500; text-decoration: none;
+      padding: 6px 14px; border: 1px solid var(--border); border-radius: 8px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .nav-back:hover { color: var(--text); border-color: var(--muted); }
+
+    .main { max-width: 900px; margin: 0 auto; padding: 3rem 1.5rem 5rem; }
+
+    .page-header { margin-bottom: 2.5rem; animation: fadeUp 0.5s ease both; }
+    .page-tag { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.4rem; }
+    .page-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 2.2rem; letter-spacing: -0.04em; }
+    .page-sub { color: var(--muted); font-size: 0.92rem; margin-top: 0.3rem; }
+
+    .concept-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 18px; padding: 1.8rem; margin-bottom: 1.5rem;
+      animation: fadeUp 0.5s 0.05s ease both; position: relative; overflow: hidden;
+    }
+    .concept-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, #5c7fff, var(--accent));
+    }
+    .concept-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; margin-bottom: 1rem; }
+    .concept-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    @media (max-width: 560px) { .concept-grid { grid-template-columns: 1fr; } }
+    .concept-box { background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; padding: 1rem 1.1rem; }
+    .cb-icon { font-size: 1.4rem; margin-bottom: 0.4rem; }
+    .cb-term { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.88rem; color: var(--accent); }
+    .cb-def { font-size: 0.82rem; color: var(--muted); margin-top: 0.2rem; line-height: 1.5; }
+    .cb-eg { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--info); margin-top: 0.6rem; }
+
+    .sim-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem;
+      animation: fadeUp 0.5s 0.1s ease both;
+    }
+    @media (max-width: 680px) { .sim-grid { grid-template-columns: 1fr; } }
+
+    .panel {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 18px; padding: 1.6rem; display: flex; flex-direction: column; gap: 1.1rem;
+    }
+    .panel-title {
+      font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.95rem;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .pt-badge {
+      font-size: 0.65rem; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase;
+      padding: 2px 8px; border-radius: 20px; background: rgba(200,240,76,0.1); color: var(--accent);
+    }
+
+    .form-label-sm {
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 0.35rem; display: block;
+    }
+    .form-control {
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 10px; color: var(--text);
+      padding: 0.7rem 0.9rem; font-family: 'DM Sans', sans-serif; font-size: 0.9rem;
+      transition: border-color 0.2s, box-shadow 0.2s; width: 100%;
+    }
+    .form-control::placeholder { color: var(--muted); opacity: 0.55; }
+    .form-control:focus {
+      border-color: var(--accent); outline: none;
+      box-shadow: 0 0 0 3px rgba(200,240,76,0.1);
+      background: var(--surface2); color: var(--text);
+    }
+
+    .btn-create {
+      background: var(--accent); color: #0e0e10; border: none;
+      border-radius: 10px; padding: 0.75rem 1rem;
+      font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.9rem;
+      width: 100%; cursor: pointer;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    }
+    .btn-create:hover { background: var(--accent-dark); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(200,240,76,0.18); }
+    .btn-create.secondary {
+      background: var(--surface2); color: var(--text); border: 1px solid var(--border);
+    }
+    .btn-create.secondary:hover { border-color: var(--accent); background: rgba(200,240,76,0.06); box-shadow: none; }
+
+    .class-display {
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 12px; padding: 1rem 1.1rem;
+    }
+    .cd-header { font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; color: var(--info); margin-bottom: 0.6rem; }
+    .cd-attrs { display: flex; flex-direction: column; gap: 4px; }
+    .cd-attr {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.78rem;
+      color: var(--muted); padding-left: 0.9rem; position: relative;
+    }
+    .cd-attr::before { content: '→'; position: absolute; left: 0; color: var(--accent); }
+
+    .objects-section { margin-top: 1.5rem; animation: fadeUp 0.5s 0.2s ease both; }
+    .section-label { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.9rem; }
+    .objects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0.9rem; }
+
+    .obj-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; padding: 1.2rem; transition: transform 0.2s, border-color 0.2s;
+    }
+    .obj-card:hover { transform: translateY(-2px); border-color: #3e3e50; }
+    .obj-name {
+      font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.92rem;
+      margin-bottom: 0.7rem; display: flex; align-items: center; gap: 6px;
+    }
+    .obj-name::before { content: '⬡'; color: var(--accent); font-size: 0.8rem; }
+    .obj-attrs { display: flex; flex-direction: column; gap: 4px; }
+    .obj-attr-row { display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; }
+    .oa-key { color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; }
+    .oa-val { color: var(--text); font-weight: 500; }
+
+    .insight-banner {
+      background: rgba(240,168,48,0.08); border: 1px solid rgba(240,168,48,0.2);
+      border-radius: 14px; padding: 1.1rem 1.3rem;
+      display: flex; align-items: flex-start; gap: 10px;
+      margin-top: 1.5rem;
+    }
+    .insight-icon { font-size: 1.2rem; flex-shrink: 0; margin-top: 1px; }
+    .insight-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.85rem; color: var(--warn); margin-bottom: 0.25rem; }
+    .insight-text { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
+
+    .reset-row { margin-top: 2rem; animation: fadeUp 0.5s 0.3s ease both; opacity: 0; }
+    .btn-reset {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(255,92,92,0.08); color: #ff5c5c;
+      border: 1px solid rgba(255,92,92,0.2); border-radius: 12px;
+      padding: 0.75rem 1.4rem; font-family: 'Syne', sans-serif;
+      font-weight: 700; font-size: 0.88rem; text-decoration: none;
+      transition: background 0.2s, border-color 0.2s, transform 0.15s;
+    }
+    .btn-reset:hover { background: rgba(255,92,92,0.14); border-color: rgba(255,92,92,0.4); color: #ff5c5c; transform: translateY(-1px); }
+
+    .locked { opacity: 0.42; pointer-events: none; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="top-nav">
+  <a class="brand-mark" href="/dashboard">
+    <div class="brand-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#0e0e10" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+      </svg>
+    </div>
+    <span class="brand-name">Sparks</span>
+  </a>
+  <a href="/dashboard" class="nav-back">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    Dashboard
+  </a>
+</nav>
+
+<main class="main">
+
+  <div class="page-header">
+    <div class="page-tag">🧪 Interactive</div>
+    <h1 class="page-title">OOP Simulator</h1>
+    <p class="page-sub">Build classes, create objects, see OOP come to life.</p>
+  </div>
+
+  <!-- Concept explainer -->
+  <div class="concept-card">
+    <div class="concept-title">📘 Learn: Classes &amp; Objects</div>
+    <div class="concept-grid">
+      <div class="concept-box">
+        <div class="cb-icon">🏗️</div>
+        <div class="cb-term">Class</div>
+        <div class="cb-def">A blueprint that defines the structure shared by all objects of that type.</div>
+        <div class="cb-eg">class Car:</div>
+      </div>
+      <div class="concept-box">
+        <div class="cb-icon">🚗</div>
+        <div class="cb-term">Object</div>
+        <div class="cb-def">A real instance created from a class — holds its own unique attribute values.</div>
+        <div class="cb-eg">red_car = Car("red", 120)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Two-step panels -->
+  <div class="sim-grid">
+
+    <!-- Step 1: Define class -->
+    <div class="panel">
+      <div class="panel-title">Create Class <span class="pt-badge">Step 1</span></div>
+      <form method="POST">
+        <div class="mb-3">
+          <label class="form-label-sm">Class Name</label>
+          <input type="text" name="class_name" class="form-control" placeholder="e.g. Car" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label-sm">Attributes <small style="color:var(--muted);text-transform:none;letter-spacing:0;font-size:0.7rem">(comma separated)</small></label>
+          <input type="text" name="attributes" class="form-control" placeholder="color, speed, fuel" required>
+        </div>
+        <button type="submit" class="btn-create">Define Class →</button>
+      </form>
+
+      {% if result %}
+      <div class="class-display">
+        <div class="cd-header">class {{ result.class_name }}:</div>
+        <div class="cd-attrs">
+          {% for attr in result.attributes %}
+          <div class="cd-attr">self.{{ attr }}</div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+    </div>
+
+    <!-- Step 2: Create object -->
+    <div class="panel {% if not result %}locked{% endif %}">
+      <div class="panel-title">Create Object <span class="pt-badge">Step 2</span></div>
+      {% if result %}
+      <form method="POST">
+        <div class="mb-3">
+          <label class="form-label-sm">Object Name</label>
+          <input type="text" name="object_name" class="form-control" placeholder="e.g. red_car" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label-sm">Values <small style="color:var(--muted);text-transform:none;letter-spacing:0;font-size:0.7rem">(comma separated)</small></label>
+          <input type="text" name="values" class="form-control" placeholder="red, 120, petrol" required>
+        </div>
+        <button type="submit" class="btn-create secondary">Instantiate Object →</button>
+      </form>
+      {% else %}
+      <p style="color:var(--muted);font-size:0.88rem;padding-top:0.3rem;">Define a class first to unlock this step.</p>
+      {% endif %}
+    </div>
+
+  </div>
+
+  <!-- Objects display -->
+  {% if objects %}
+  <div class="objects-section">
+    <div class="section-label">🚗 Objects Created</div>
+    <div class="objects-grid">
+      {% for obj in objects %}
+      <div class="obj-card">
+        <div class="obj-name">{{ obj.object_name }}</div>
+        <div class="obj-attrs">
+          {% for key, val in obj["mapping"].items() %}
+          <div class="obj-attr-row">
+            <span class="oa-key">{{ key }}</span>
+            <span class="oa-val">{{ val }}</span>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="insight-banner">
+      <div class="insight-icon">💡</div>
+      <div>
+        <div class="insight-title">Key Concept</div>
+        <div class="insight-text">Each object holds its own unique values, but all objects share the same structure defined by the class. Write once, instantiate many — that's the power of OOP.</div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  <div class="reset-row">
+    <a href="/reset" class="btn-reset">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4.95"/></svg>
+      Reset Simulator
+    </a>
+  </div>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

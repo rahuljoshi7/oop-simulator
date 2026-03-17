@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Progress</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --accent: #c8f04c;
+      --accent-dark: #a8cf2c;
+      --bg: #0e0e10;
+      --surface: #18181c;
+      --surface2: #222228;
+      --border: #2e2e38;
+      --text: #f0f0f4;
+      --muted: #7a7a8c;
+      --correct: #4cde80;
+      --wrong: #ff5c5c;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      font-family: 'DM Sans', sans-serif;
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Ambient blobs */
+    body::before, body::after {
+      content: '';
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(110px);
+      opacity: 0.08;
+      pointer-events: none;
+    }
+    body::before {
+      width: 550px; height: 550px;
+      background: var(--accent);
+      top: -180px; right: -180px;
+    }
+    body::after {
+      width: 450px; height: 450px;
+      background: #5c7fff;
+      bottom: -120px; left: -120px;
+    }
+
+    /* NAV */
+    .top-nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.2rem 2.5rem;
+      border-bottom: 1px solid var(--border);
+      background: rgba(14,14,16,0.85);
+      backdrop-filter: blur(12px);
+      position: sticky; top: 0; z-index: 100;
+    }
+    .brand-mark { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .brand-icon {
+      width: 34px; height: 34px; background: var(--accent);
+      border-radius: 9px; display: flex; align-items: center; justify-content: center;
+    }
+    .brand-icon svg { width: 16px; height: 16px; }
+    .brand-name { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.1rem; color: var(--text); }
+    .nav-back {
+      display: flex; align-items: center; gap: 6px;
+      color: var(--muted); font-size: 0.85rem; font-weight: 500;
+      text-decoration: none; padding: 6px 14px;
+      border: 1px solid var(--border); border-radius: 8px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .nav-back:hover { color: var(--text); border-color: var(--muted); }
+
+    /* MAIN */
+    .main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 1.5rem;
+    }
+
+    .progress-wrapper {
+      width: 100%;
+      max-width: 520px;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    /* Score Card */
+    .score-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 2.8rem 2.2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      animation: fadeUp 0.5s ease both;
+    }
+    .score-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), #5c7fff, var(--accent));
+      background-size: 200%;
+      animation: shimmer 3s linear infinite;
+    }
+    @keyframes shimmer {
+      from { background-position: 0%; }
+      to   { background-position: 200%; }
+    }
+
+    .result-emoji { font-size: 3.5rem; margin-bottom: 1rem; animation: popIn 0.5s 0.2s ease both; }
+    @keyframes popIn {
+      from { transform: scale(0.5); opacity: 0; }
+      to   { transform: scale(1);   opacity: 1; }
+    }
+
+    .score-label {
+      font-size: 0.72rem; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 0.4rem;
+    }
+    .score-big {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800; font-size: 4.5rem;
+      letter-spacing: -0.05em; line-height: 1;
+      animation: countUp 0.7s 0.3s ease both;
+    }
+    .score-big.pass { color: var(--accent); }
+    .score-big.fail { color: var(--wrong); }
+    @keyframes countUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .score-fraction {
+      font-size: 0.9rem; color: var(--muted);
+      margin-top: 0.3rem; margin-bottom: 1.5rem;
+    }
+
+    /* Circular ring */
+    .ring-wrap {
+      display: flex; justify-content: center;
+      margin: 1.2rem 0 1.5rem;
+    }
+    .ring-svg { transform: rotate(-90deg); }
+    .ring-bg   { fill: none; stroke: var(--surface2); stroke-width: 8; }
+    .ring-fill { fill: none; stroke-width: 8; stroke-linecap: round;
+      transition: stroke-dashoffset 1.2s cubic-bezier(0.4,0,0.2,1); }
+    .ring-fill.pass { stroke: var(--accent); }
+    .ring-fill.ring-fail { stroke: var(--wrong); }
+    .ring-label {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800; font-size: 1.3rem;
+      fill: var(--text);
+      dominant-baseline: middle;
+      text-anchor: middle;
+    }
+    .ring-sub { font-size: 0.55rem; fill: var(--muted); dominant-baseline: middle; text-anchor: middle; }
+
+    /* Status message */
+    .status-msg {
+      font-size: 0.95rem; line-height: 1.6;
+      animation: fadeUp 0.5s 0.4s ease both; opacity: 0;
+    }
+    .status-msg.pass { color: var(--correct); }
+    .status-msg.fail { color: var(--wrong); }
+
+    /* Stats row */
+    .stats-row {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem;
+      animation: fadeUp 0.5s 0.15s ease both;
+    }
+    .stat-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1rem 0.5rem;
+      text-align: center;
+    }
+    .stat-val {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800; font-size: 1.5rem;
+      letter-spacing: -0.03em;
+    }
+    .stat-val.green { color: var(--correct); }
+    .stat-val.red   { color: var(--wrong); }
+    .stat-val.blue  { color: #7eb4ff; }
+    .stat-key {
+      font-size: 0.7rem; font-weight: 500;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--muted); margin-top: 0.2rem;
+    }
+
+    /* CTA buttons */
+    .cta-col {
+      display: flex; flex-direction: column; gap: 0.75rem;
+      animation: fadeUp 0.5s 0.3s ease both; opacity: 0;
+    }
+    .btn-next {
+      background: var(--accent); color: #0e0e10;
+      border: none; border-radius: 12px;
+      padding: 0.9rem 1rem;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700; font-size: 1rem;
+      text-align: center; text-decoration: none;
+      cursor: pointer; display: block;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    }
+    .btn-next:hover {
+      background: var(--accent-dark); color: #0e0e10;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(200,240,76,0.22);
+    }
+    .btn-dash {
+      background: var(--surface); color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 0.85rem 1rem;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700; font-size: 0.95rem;
+      text-align: center; text-decoration: none;
+      display: block;
+      transition: border-color 0.2s, transform 0.15s;
+    }
+    .btn-dash:hover {
+      border-color: var(--muted); color: var(--text);
+      transform: translateY(-1px);
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="top-nav">
+  <a class="brand-mark" href="/dashboard">
+    <div class="brand-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#0e0e10" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+      </svg>
+    </div>
+    <span class="brand-name">Sparks</span>
+  </a>
+  <a href="/dashboard" class="nav-back">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    Dashboard
+  </a>
+</nav>
+
+<main class="main">
+  <div class="progress-wrapper">
+
+    <!-- Score Card -->
+    <div class="score-card">
+      <div class="result-emoji">
+        {% if percentage >= 80 %}🏆
+        {% elif percentage >= 60 %}🎯
+        {% elif percentage >= 40 %}💪
+        {% else %}📚{% endif %}
+      </div>
+
+      <div class="score-label">Your Score</div>
+      <div class="score-big {% if percentage >= 60 %}pass{% else %}fail{% endif %}">
+        {{ percentage }}%
+      </div>
+      <div class="score-fraction">{{ score }} correct out of {{ total }}</div>
+
+      <!-- Ring -->
+      <div class="ring-wrap">
+        <svg class="ring-svg" width="120" height="120" viewBox="0 0 120 120">
+          <circle class="ring-bg" cx="60" cy="60" r="50"/>
+          <circle
+            class="ring-fill {% if percentage >= 60 %}pass{% else %}ring-fail{% endif %}"
+            cx="60" cy="60" r="50"
+            id="ringCircle"
+            stroke-dasharray="314.16"
+            stroke-dashoffset="314.16"
+          />
+          <text class="ring-label" x="60" y="57" transform="rotate(90,60,60)">{{ percentage }}%</text>
+          <text class="ring-sub"   x="60" y="69" transform="rotate(90,60,60)">SCORE</text>
+        </svg>
+      </div>
+
+      <div class="status-msg {% if percentage >= 60 %}pass{% else %}fail{% endif %}">
+        {% if percentage >= 60 %}
+          🚀 Great job! You've unlocked the next level.
+        {% else %}
+          💡 Keep going — review the material and try again!
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Stat Boxes -->
+    <div class="stats-row">
+      <div class="stat-box">
+        <div class="stat-val green">{{ score }}</div>
+        <div class="stat-key">Correct</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-val red">{{ total - score }}</div>
+        <div class="stat-key">Wrong</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-val blue">{{ total }}</div>
+        <div class="stat-key">Total</div>
+      </div>
+    </div>
+
+    <!-- CTAs -->
+    <div class="cta-col">
+      <a href="/quiz/{{ next_level }}" class="btn-next">
+        Continue to {{ next_level | capitalize }} →
+      </a>
+      <a href="/dashboard" class="btn-dash">← Back to Dashboard</a>
+    </div>
+
+  </div>
+</main>
+
+<script>
+  // Animate ring on load
+  window.addEventListener('load', () => {
+    const pct = {{ percentage }};
+    const circle = document.getElementById('ringCircle');
+    const circumference = 314.16;
+    const offset = circumference - (pct / 100) * circumference;
+    setTimeout(() => {
+      circle.style.strokeDashoffset = offset;
+    }, 200);
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
