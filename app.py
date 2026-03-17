@@ -21,7 +21,12 @@ app.permanent_session_lifetime = timedelta(days=7)
 def init_db():
 
     from database.db import db
+
+    print("Creating tables...")
+
     db.create_all()
+
+    print("Tables created!")
 
     return "✅ Tables Created!"
 # ================= LOAD QUESTIONS =================
