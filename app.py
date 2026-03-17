@@ -1,37 +1,27 @@
 from flask import Flask, render_template, request, redirect, session
 from config import Config
 from database.db import db
-from models.user import User
-from models.quiz_result import QuizResult
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import timedelta
-from models.user import User
-from models.quiz_result import QuizResult
-
 import json
 
+# ================= APP INIT =================
 app = Flask(__name__)
 app.config.from_object(Config)
 
 db.init_app(app)
 app.permanent_session_lifetime = timedelta(days=7)
 
+# ================= IMPORT MODELS (IMPORTANT) =================
+from models.user import User
+from models.quiz_result import QuizResult
 
-@app.route("/init-db")
-def init_db():
-
-    from database.db import db
-
-    print("Creating tables...")
-
+# ================= CREATE TABLES (PRODUCTION FIX) =================
+with app.app_context():
     db.create_all()
 
-    print("Tables created!")
-
-    return "✅ Tables Created!"
 # ================= LOAD QUESTIONS =================
 def load_questions():
-
     with open("questions/beginner.json") as f:
         beginner = json.load(f)
 
@@ -49,12 +39,10 @@ def load_questions():
 
 quiz_data = load_questions()
 
-
 # ================= HOME =================
 @app.route("/")
 def home():
-    return render_template("login.html")
-
+    return redirect("/login")
 
 # ================= LOGIN =================
 @app.route("/login", methods=["GET", "POST"])
@@ -67,18 +55,14 @@ def login():
         user = User.query.filter_by(email=email).first()
 
         if user and check_password_hash(user.password, password):
-
-            session.permanent = True   # 🔥 IMPORTANT
-
+            session.permanent = True
             session["user_id"] = user.id
             session["user_name"] = user.name
-
             return redirect("/dashboard")
 
         return "Invalid email or password"
 
     return render_template("login.html")
-
 
 # ================= SIGNUP =================
 @app.route("/signup", methods=["GET", "POST"])
@@ -100,7 +84,6 @@ def signup():
 
     return render_template("signup.html")
 
-
 # ================= DASHBOARD =================
 @app.route("/dashboard")
 def dashboard():
@@ -110,13 +93,11 @@ def dashboard():
 
     return render_template("dashboard.html", name=session["user_name"])
 
-
 # ================= LOGOUT =================
 @app.route("/logout")
 def logout():
     session.clear()
     return redirect("/login")
-
 
 # ================= SIMULATOR =================
 @app.route("/simulator", methods=["GET", "POST"])
@@ -133,6 +114,7 @@ def simulator():
 
     if request.method == "POST":
 
+        # Create class
         if request.form.get("class_name") and request.form.get("attributes"):
             class_name = request.form["class_name"]
             attributes = request.form["attributes"]
@@ -141,6 +123,7 @@ def simulator():
             session["attributes"] = attributes
             session["objects"] = []
 
+        # Create object
         elif request.form.get("object_name") and request.form.get("values"):
 
             object_name = request.form["object_name"]
@@ -173,7 +156,6 @@ def simulator():
         objects=session.get("objects", [])
     )
 
-
 # ================= RESET =================
 @app.route("/reset")
 def reset():
@@ -181,7 +163,6 @@ def reset():
     session.pop("attributes", None)
     session.pop("objects", None)
     return redirect("/simulator")
-
 
 # ================= QUIZ =================
 @app.route("/quiz/<level>", methods=["GET", "POST"])
@@ -221,7 +202,7 @@ def quiz(level):
         total = len(questions)
         percentage = (score / total) * 100
 
-        # SAVE RESULT
+        # Save result
         new_result = QuizResult(
             user_id=session["user_id"],
             level=level,
@@ -240,7 +221,6 @@ def quiz(level):
         return redirect("/next-level")
 
     return render_template("quiz.html", questions=questions, topic=level)
-
 
 # ================= NEXT LEVEL =================
 @app.route("/next-level")
@@ -269,7 +249,6 @@ def next_level():
         next_level=next_lvl
     )
 
-
 # ================= PERFORMANCE =================
 @app.route("/performance")
 def performance():
@@ -282,9 +261,6 @@ def performance():
     return render_template("performance.html", results=results)
 
 
-# ================= MAIN =================
+# ================= RUN =================
 if __name__ == "__main__":
-    with app.app_context():
-        db.create_all()
-
     app.run(debug=True)
