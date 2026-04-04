@@ -3,12 +3,6 @@ pipeline {
 
     stages {
 
-        stage('Clone Code') {
-            steps {
-                git branch: 'main', url: 'https://github.com/rahuljoshi7/oop-simulator.git'
-            }
-        }
-
         stage('Build Docker Image') {
             steps {
                 bat 'docker build -t oop-simulator .'
@@ -17,8 +11,8 @@ pipeline {
 
         stage('Stop Old Container') {
             steps {
-                bat 'docker stop oop-container || true'
-                bat 'docker rm oop-container || true'
+                bat 'docker stop oop-container || exit 0'
+                bat 'docker rm oop-container || exit 0'
             }
         }
 
