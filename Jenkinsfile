@@ -5,7 +5,7 @@ pipeline {
 
         stage('Clone Code') {
             steps {
-                git 'https://github.com/your-username/oop-simulator.git'
+                git 'https://github.com/rahuljoshi7/oop-simulator.git'
             }
         }
 
